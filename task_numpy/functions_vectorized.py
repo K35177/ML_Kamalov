@@ -13,7 +13,8 @@ def prod_non_zero_diag(x):
     Vectorized implementation.
     """
 
-    pass
+    diagonal = np.diagonal(np.asarray(x))
+    return np.prod(diagonal[diagonal != 0])
 
 
 def are_multisets_equal(x, y):
@@ -27,7 +28,7 @@ def are_multisets_equal(x, y):
     Vectorized implementation.
     """
 
-    pass
+    return np.array_equal(np.sort(np.asarray(x)), np.sort(np.asarray(y)))
 
 
 def max_after_zero(x):
@@ -41,7 +42,10 @@ def max_after_zero(x):
     Vectorized implementation.
     """
 
-    pass
+    values = np.asarray(x)[1:][np.asarray(x)[:-1] == 0]
+    if values.size == 0:
+        raise ValueError("No element follows zero")
+    return np.max(values)
 
 
 def convert_image(img, coefs):
@@ -56,7 +60,7 @@ def convert_image(img, coefs):
     Vectorized implementation.
     """
 
-    pass
+    return np.sum(np.asarray(img) * np.asarray(coefs), axis=2)
 
 
 def run_length_encoding(x):
@@ -70,7 +74,14 @@ def run_length_encoding(x):
     Vectorized implementation.
     """
 
-    pass
+    values = np.asarray(x)
+    if values.size == 0:
+        return np.array([], dtype=values.dtype), np.array([], dtype=int)
+    starts = np.r_[True, values[1:] != values[:-1]]
+    indices = np.flatnonzero(starts)
+    elements = values[indices]
+    counters = np.diff(np.r_[indices, values.size])
+    return elements, counters
 
 
 def pairwise_distance(x, y):
@@ -84,4 +95,7 @@ def pairwise_distance(x, y):
     Vctorized implementation.
     """
 
-    pass
+    x_array = np.asarray(x)
+    y_array = np.asarray(y)
+    differences = x_array[:, None, :] - y_array[None, :, :]
+    return np.sqrt(np.sum(differences ** 2, axis=2))

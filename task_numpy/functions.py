@@ -10,7 +10,13 @@ def prod_non_zero_diag(x):
     Not vectorized implementation.
     """
 
-    pass
+    diagonal_length = min(len(x), len(x[0])) if len(x) else 0
+    product = 1
+    for i in range(diagonal_length):
+        value = x[i][i]
+        if value != 0:
+            product *= value
+    return product
 
 
 def are_multisets_equal(x, y):
@@ -24,7 +30,15 @@ def are_multisets_equal(x, y):
     Not vectorized implementation.
     """
 
-    pass
+    if len(x) != len(y):
+        return False
+    remaining = list(y)
+    for value in x:
+        try:
+            remaining.remove(value)
+        except ValueError:
+            return False
+    return True
 
 
 def max_after_zero(x):
@@ -38,7 +52,13 @@ def max_after_zero(x):
     Not vectorized implementation.
     """
 
-    pass
+    candidates = []
+    for i in range(1, len(x)):
+        if x[i - 1] == 0:
+            candidates.append(x[i])
+    if not candidates:
+        raise ValueError("No element follows zero")
+    return max(candidates)
 
 
 def convert_image(img, coefs):
@@ -53,7 +73,18 @@ def convert_image(img, coefs):
     Not vectorized implementation.
     """
 
-    pass
+    height = len(img)
+    width = len(img[0]) if height else 0
+    result = []
+    for i in range(height):
+        row = []
+        for j in range(width):
+            value = 0
+            for channel in range(len(coefs)):
+                value += img[i][j][channel] * coefs[channel]
+            row.append(value)
+        result.append(row)
+    return result
 
 
 def run_length_encoding(x):
@@ -67,7 +98,17 @@ def run_length_encoding(x):
     Not vectorized implementation.
     """
 
-    pass
+    if len(x) == 0:
+        return [], []
+    elements = [x[0]]
+    counters = [1]
+    for value in x[1:]:
+        if value == elements[-1]:
+            counters[-1] += 1
+        else:
+            elements.append(value)
+            counters.append(1)
+    return elements, counters
 
 
 def pairwise_distance(x, y):
@@ -81,4 +122,14 @@ def pairwise_distance(x, y):
     Not vectorized implementation.
     """
 
-    pass
+    distances = []
+    for x_row in x:
+        row = []
+        for y_row in y:
+            squared_sum = 0
+            for x_value, y_value in zip(x_row, y_row):
+                difference = x_value - y_value
+                squared_sum += difference * difference
+            row.append(squared_sum ** 0.5)
+        distances.append(row)
+    return distances
