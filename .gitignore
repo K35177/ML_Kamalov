@@ -1,3 +1,6 @@
 .venv/
 __pycache__/
 task_numpy/README.md
+task_numpy.zip
+.ipynb_checkpoints/
+*.pdf
