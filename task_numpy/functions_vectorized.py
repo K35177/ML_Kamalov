@@ -13,8 +13,9 @@ def prod_non_zero_diag(x):
     Vectorized implementation.
     """
 
-    diagonal = np.diagonal(np.asarray(x))
-    return np.prod(diagonal[diagonal != 0])
+    diagonal = np.diag(x)
+    non_zero = diagonal[diagonal != 0]
+    return np.prod(non_zero)
 
 
 def are_multisets_equal(x, y):
@@ -28,7 +29,7 @@ def are_multisets_equal(x, y):
     Vectorized implementation.
     """
 
-    return np.array_equal(np.sort(np.asarray(x)), np.sort(np.asarray(y)))
+    return np.array_equal(np.sort(x), np.sort(y))
 
 
 def max_after_zero(x):
@@ -42,10 +43,10 @@ def max_after_zero(x):
     Vectorized implementation.
     """
 
-    values = np.asarray(x)[1:][np.asarray(x)[:-1] == 0]
-    if values.size == 0:
-        raise ValueError("No element follows zero")
-    return np.max(values)
+    result = x[1:][x[:-1] == 0]
+
+
+    return np.max(result)
 
 
 def convert_image(img, coefs):
@@ -60,7 +61,7 @@ def convert_image(img, coefs):
     Vectorized implementation.
     """
 
-    return np.sum(np.asarray(img) * np.asarray(coefs), axis=2)
+    return np.dot(img, coefs)
 
 
 def run_length_encoding(x):
@@ -74,13 +75,13 @@ def run_length_encoding(x):
     Vectorized implementation.
     """
 
-    values = np.asarray(x)
-    if values.size == 0:
-        return np.array([], dtype=values.dtype), np.array([], dtype=int)
-    starts = np.r_[True, values[1:] != values[:-1]]
-    indices = np.flatnonzero(starts)
-    elements = values[indices]
-    counters = np.diff(np.r_[indices, values.size])
+
+    changes = np.where(x[1:] != x[:-1])[0] + 1
+    starts = np.concatenate(([0], changes))
+
+    elements = x[starts]
+    counters = np.diff(np.append(starts, len(x)))
+
     return elements, counters
 
 
@@ -95,7 +96,5 @@ def pairwise_distance(x, y):
     Vctorized implementation.
     """
 
-    x_array = np.asarray(x)
-    y_array = np.asarray(y)
-    differences = x_array[:, None, :] - y_array[None, :, :]
-    return np.sqrt(np.sum(differences ** 2, axis=2))
+    differences = x[:, None, :] - y[None, :, :]
+    return np.linalg.norm(differences, axis=2)
