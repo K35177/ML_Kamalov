@@ -1,0 +1,21 @@
+{
+  "percentiles": {
+    "50": -31.6864,
+    "70": -223.536,
+    "90": -580.0696
+  },
+  "session_counts": {
+    "100": -369.18600000000004,
+    "250": -223.536,
+    "500": -154.84560000000002
+  },
+  "taxi_test_mean": 5.878,
+  "taxi_positive_fraction": 0.934,
+  "taxi_iterations": 115,
+  "cartpole_test_mean": 238.59,
+  "cartpole_iterations": 19,
+  "versions": {
+    "numpy": "2.5.3",
+    "gymnasium": "1.4.0"
+  }
+}
