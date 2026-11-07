@@ -3,3 +3,10 @@ __pycache__/
 .ipynb_checkpoints/
 *.pdf
 README.md
+!EGE/README.md
+
+# Local editor state and extracted training data
+.obsidian/
+task_classification/porto-seguro-safe-driver-prediction.zip
+!task_classification/README.md
+!/README.md
